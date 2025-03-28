@@ -12,73 +12,42 @@ npx create-turbo@latest
 
 ## What's inside?
 
-This Turborepo includes the following packages/apps:
+This Turborepo has the following structure:
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- `apps/`: includes all our applications, like web, backend, docs, etc..
+  - `docs`: a [Next.js](https://nextjs.org/) app
+  - `web`: another [Next.js](https://nextjs.org/) app
+- `packages/`: includes toolings, libraries, services, configs we will use in our apps. **Important:** The idea is that defined things inside each app should not be shaerable between them, instead should be a package in `packages/`.
+  - `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
+  - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+  - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-### Utilities
+Other things we will have:
 
-This Turborepo has some additional tools already setup for you:
+- Root `package.json`: is the base of our workspace.
+- Root `turbo.json`: is used to configure the behavior of turbo. To learn how to configure [tasks](https://turbo.build/repo/docs/crafting-your-repository/configuring-tasks)
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## Benefits of using monorepo & workspaces with turbo
 
-### Build
+- **Avoiding barrel files:** Barrel files are files that re-export other files in the same package, creating one entrypoint for the entire package. While they might appear convenient, they're difficult for compilers and bundlers to handle and can quickly lead to performance problems.
+- **More powerful features:** exports also has other powerful features compared to the main field like Conditional Exports. In general, we recommend using exports over main whenever possible as it is the more modern option.
+- **IDE autocompletion:** By specifying the entrypoints for your package using exports, you can ensure that your code editor can provide auto-completion for the package's exports.
 
-To build all apps and packages, run the following command:
+## Managing Dependencies
 
+In each app or maybe package we will have two types of dependencies:
+
+- **External dependencies**: come from the npm registry, allowing you to leverage valuable code from the ecosystem to build your applications and libraries faster.
+- **Internal dependencies:** Which let you share functionality within your repository, dramatically improving discoverability and usability of shared code.
+
+### Adding dependencies
+
+When you install a dependency in your repository, you should install it directly in the package that uses it. The package's package.json will have every dependency that the package needs.
+
+Adding a dependency can be done through running:
+
+```bash
+npm install jest --workspace=web --workspace=@repo/ui --save-dev
 ```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
