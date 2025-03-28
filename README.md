@@ -1,4 +1,4 @@
-# Turborepo starter
+# My first Turborepo App
 
 This Turborepo starter is maintained by the Turborepo core team.
 
