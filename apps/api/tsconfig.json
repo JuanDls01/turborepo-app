@@ -1,0 +1,15 @@
+{
+  "extends": "@repo/typescript-config/base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/utils/*"],
+      "@routes/*": ["src/routes/*"]
+    },
+    "outDir": "./dist",
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
