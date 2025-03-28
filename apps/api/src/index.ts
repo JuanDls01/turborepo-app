@@ -1,8 +1,11 @@
 import express, { Express, Request, Response } from "express";
+import cors from "cors";
 import mainRouter from "./routes";
 
 const app: Express = express();
 const port = 3001;
+
+app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
