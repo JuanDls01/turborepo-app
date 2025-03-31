@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+  db:
+    image: postgres:13-alpine
+    container_name: development-database
+    env_file: .env
+    volumes:
+      - development-database:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+
+volumes:
+  development-database:
+    name: development-database
