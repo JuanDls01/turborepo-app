@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import "./App.css";
+import { Button } from "@repo/ui/button";
 
 interface User {
   id: number;
@@ -31,7 +32,7 @@ function App() {
     <>
       <div>
         <h1>{count}</h1>
-        <button onClick={handleClick}>Increment</button>
+        <Button onClick={handleClick}>Increment</Button>
       </div>
       {users && (
         <div>
