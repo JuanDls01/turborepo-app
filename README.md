@@ -49,5 +49,98 @@ When you install a dependency in your repository, you should install it directly
 Adding a dependency can be done through running:
 
 ```bash
-npm install jest --workspace=web --workspace=@repo/ui --save-dev
+npm install [dependency] --workspace=web --workspace=@repo/ui --save-dev
+```
+
+## Pasos para iniciar el proyecto
+
+1. Create basic monorepo:
+
+```bash
+npx create-turbo@latest
+```
+
+2. Remove unnecessary workspaces
+
+```bash
+rm -rf [folder]
+```
+
+Carpetas que elimine de la configuración inicial de turborepo:
+
+- ui
+- web
+- docs
+
+Luego remuevo node_modules, .turbo y package-lock.json e instalo nuevamente las dependencias
+
+3. Creo un proyecto básico con expo y typescript:
+
+```bash
+npx create-expo-app@latest --template blank-typescript
+```
+
+Para probarlo y ver que todo anda bien
+
+```bash
+npx expo start --tunnel
+```
+
+4. Create react native typescript config
+
+Inside packages/typescr-config create a new file `react-native-library.json` which extends from `./base.json`. I copied this from: https://github.com/vercel/turborepo/blob/main/examples/with-react-native-web/packages/typescript-config/react-native-library.json
+
+```json
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "allowImportingTsExtensions": true,
+    "jsx": "react",
+    "lib": ["DOM", "ESNext"],
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "target": "ESNext"
+  }
+}
+```
+
+5. Create internal package named ui
+
+package.json
+
+```json
+{
+  "name": "@repo/ui",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Unified Design System package for this monorepo",
+  "main": "src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-native": "^0.78.2"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "^0.0.0",
+    "@types/react": "^19.1.0",
+    "typescript": "^5.8.2"
+  }
+}
+```
+
+tsconfig.json
+
+```json
+{
+  "extends": "@repo/typescript-config/react-native-library",
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "strict": true
+  }
+}
 ```

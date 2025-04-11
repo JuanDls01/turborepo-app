@@ -1,4 +1,5 @@
 import { Text, View } from "react-native";
+import { Button } from "@repo/ui";
 
 export default function Index() {
   return (

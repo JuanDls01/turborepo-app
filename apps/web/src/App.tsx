@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import "./App.css";
-import { Button } from "@repo/ui/button";
+import { ButtonWeb } from "@repo/ui/button.web";
 
 interface User {
   id: number;
@@ -32,7 +32,7 @@ function App() {
     <>
       <div>
         <h1>{count}</h1>
-        <Button onClick={handleClick}>Increment</Button>
+        <ButtonWeb onClick={handleClick}>Increment</ButtonWeb>
       </div>
       {users && (
         <div>
